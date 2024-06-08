@@ -1,0 +1,2 @@
+class SMBAgentDDQN():
+    pass
