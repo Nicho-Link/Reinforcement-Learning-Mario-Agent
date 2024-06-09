@@ -1,14 +1,14 @@
 from torch import nn
 
 class SMBAgentNN():
-    def __init__(self, state_shape, actionspace_number):
+    def __init__(self, state_shape, num_actions):
         channels, height, width, frames = state_shape
 
         if height != 240 or width != 256 or frames != 10:
             raise ValueError(f"Expecting state shape: (1, 240, 256, 10), got: {state_shape}")
         
-        self.online = self.build_cnn(channels, actionspace_number)
-        self.target = self.build_cnn(channels, actionspace_number)
+        self.online = self.build_cnn(channels, num_actions)
+        self.target = self.build_cnn(channels, num_actions)
         self.target.load_state_dict(self.online.state_dict())
         for param in self.target.parameters():
             param.requires_grad = False
@@ -19,7 +19,7 @@ class SMBAgentNN():
         elif model == "target":
             return self.target(input)
 
-    def build_cnn(self, channels, actionspace_number):
+    def build_cnn(self, channels, num_actions):
         return nn.Sequential(
             nn.Conv2d(in_channels=channels, out_channels=32, kernel_size=8, stride=4),
             nn.ReLU(),
@@ -30,5 +30,5 @@ class SMBAgentNN():
             nn.Flatten(),
             nn.Linear(1600, 512),
             nn.ReLU(),
-            nn.Linear(512, actionspace_number),
+            nn.Linear(512, num_actions),
         )
