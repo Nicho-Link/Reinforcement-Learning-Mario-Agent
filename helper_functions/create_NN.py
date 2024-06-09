@@ -13,11 +13,11 @@ class SMBAgentNN():
         for param in self.target.parameters():
             param.requires_grad = False
 
-    def forward(self, input, model):
+    def forward(self, state, model):
         if model == "online":
-            return self.online(input)
+            return self.online(state)
         elif model == "target":
-            return self.target(input)
+            return self.target(state)
 
     def build_cnn(self, channels, num_actions):
         return nn.Sequential(
