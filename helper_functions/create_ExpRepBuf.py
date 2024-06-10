@@ -7,7 +7,10 @@ class ExperienceReplayBuffer:
         self.position = 0
  
     def add(self, state, action, next_state, reward, resetnow):
-        self.buffer[self.position] = (state, action, reward, next_state, resetnow)
+        if len(self.buffer) < self.capacity:
+            self.buffer.append((state, action, next_state, reward, resetnow))
+        else:
+            self.buffer[self.position] = (state, action, next_state, reward, resetnow)
         self.position = (self.position + 1) % self.capacity
 
     def sample(self, batch_size):

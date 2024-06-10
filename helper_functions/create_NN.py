@@ -7,8 +7,8 @@ class SMBAgentNN():
         if height != 240 or width != 256 or frames != 10:
             raise ValueError(f"Expecting state shape: (1, 240, 256, 10), got: {state_shape}")
         
-        self.online = self.build_cnn(channels, num_actions)
-        self.target = self.build_cnn(channels, num_actions)
+        self.online = self.build_cnn(channels * frames, num_actions)
+        self.target = self.build_cnn(channels * frames, num_actions)
         self.target.load_state_dict(self.online.state_dict())
         for param in self.target.parameters():
             param.requires_grad = False
@@ -32,3 +32,10 @@ class SMBAgentNN():
             nn.ReLU(),
             nn.Linear(512, num_actions),
         )
+    
+    def to(self, device):
+        self.online.to(device)
+        self.target.to(device)
+
+    def parameters(self):
+        return self.online.parameters()
