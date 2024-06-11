@@ -1,4 +1,4 @@
-import os, datetime
+import os
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 from nes_py.wrappers import JoypadSpace
@@ -51,7 +51,7 @@ num_episodes = 10000
 
 save_every = 500000
 
-vid_folder = os.path.join("videos", datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S'))
+vid_folder = os.path.join("videos")
 
 env = gym_super_mario_bros.make('SuperMarioBros-1-1-v0')
 env = JoypadSpace(env, action_space)
@@ -68,11 +68,11 @@ state_shape = state.shape
 model_folder = os.path.join("models")
 if not os.path.exists(model_folder):
     os.makedirs(model_folder)
-checkpoint_folder = os.path.join("checkpoints", datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S'))
+checkpoint_folder = os.path.join("checkpoints")
 if not os.path.exists(checkpoint_folder):
     os.makedirs(checkpoint_folder)
 starting_point = None
-plot_folder = os.path.join("logs", datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S'))
+plot_folder = os.path.join("logs")
 if not os.path.exists(plot_folder):
     os.makedirs(plot_folder)
 
