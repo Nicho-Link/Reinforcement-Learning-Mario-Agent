@@ -109,11 +109,11 @@ for episode in range(num_episodes):
         plot_results(reward_list, steps_list, q_list, loss_list, epsilon_list, os.path.join(plot_folder, f"plot_{episode}.png"))
     
     if episode % save_every == 0:
-        mario.saveModel(checkpoint_folder, episode=episode)
+        torch.save(dict(model=mario.model.state_dict(), epsilon=mario.epsilon), os.path.join(model_folder, f"model_{episode}.pth"))
     
     mario.decayEpsilon()
 
-mario.saveModel(model_folder)
+torch.save(dict(model=mario.model.state_dict(), epsilon=mario.epsilon), os.path.join(model_folder, f"final_model.pth"))
 
 env.close()
 

@@ -136,9 +136,6 @@ class MarioAgentEpsilonGreedy:
         if self.current_step % self.exp_before_target_sync == 0:
             self.sync_Q_target()
 
-        if self.current_step % self.save_every == 0:
-            self.saveModel(self.checkpoint_folder)
-
         if self.current_step < self.exp_before_training:
             return None, None
         
@@ -154,20 +151,6 @@ class MarioAgentEpsilonGreedy:
         loss = self.update_Q_online_get_loss(td_estimation, q_target)
 
         return (td_estimation.mean().item(), loss)
-    
-    def saveModel(self, path, episode=None):
-        if episode == None:
-            save_dir = os.path.join(path, f"Checkpoint_{int(self.current_step // self.save_every)}.chkpt")
-            if not os.path.exists(save_dir):
-                os.makedirs(save_dir)
-            torch.save(dict(model=self.model.state_dict(), epsilon=self.epsilon), save_dir)
-            print(f"Step: {self.current_step}\nModel saved at {save_dir}")
-        else:
-            save_dir = os.path.join(path, f"Checkpoint_{episode}.chkpt")
-            if not os.path.exists(save_dir):
-                os.makedirs(save_dir)
-            torch.save(dict(model=self.model.state_dict(), epsilon=self.epsilon), save_dir)
-            print(f"Step: {self.current_step}\nModel saved at {save_dir}")
 
     def loadModel(self, path):
         checkpoint = torch.load(path, map_location=self.device)
