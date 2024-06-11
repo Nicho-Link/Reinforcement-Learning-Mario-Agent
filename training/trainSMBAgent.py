@@ -66,7 +66,11 @@ env = FrameStack(env, num_stack=stacking_number)
 state = env.reset()
 state_shape = state.shape
 model_folder = os.path.join("models")
+if not os.path.exists(model_folder):
+    os.makedirs(model_folder)
 checkpoint_folder = os.path.join("checkpoints", datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S'))
+if not os.path.exists(checkpoint_folder):
+    os.makedirs(checkpoint_folder)
 starting_point = None
 plot_folder = os.path.join("logs", datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S'))
 if not os.path.exists(plot_folder):
