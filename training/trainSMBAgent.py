@@ -81,17 +81,18 @@ epsilon_list = []
 
 for episode in range(num_episodes):
     state = env.reset()
-    
+    steps = 0
     while True:
         #env.render() # Visualize
         action = mario.selectAction(state)
+        steps = steps + 1
         next_state, reward, resetnow, info = env.step(action)
         mario.saveExp(state, action, next_state, reward, resetnow)
         q, loss = mario.learn_get_TDest_loss()
         state = next_state
         if resetnow or info['flag_get']:
             break
-    print(f"Episode {episode + 1} abgeschlossen mit {mario.current_step} Schritten, Gesamtbelohnung: {reward}, Epsilon: {mario.epsilon}\n\n")
+    print(f"Episode {episode + 1} abgeschlossen mit {steps} Schritten, Gesamtbelohnung: {reward}, Epsilon: {mario.epsilon}\n\n")
     
     reward_list.append(reward)
     q_list.append(q)
