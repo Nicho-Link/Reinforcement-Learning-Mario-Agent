@@ -97,7 +97,7 @@ for episode in range(num_episodes):
     epsilon_list.append(mario.epsilon)
 
     if episode % 50 == 0:
-        plot_results(reward_list, q_list, loss_list, epsilon_list, plot_folder)
+        plot_results(reward_list, q_list, loss_list, epsilon_list, os.path.join(plot_folder, f"plot_{episode}.png"))
 
 mario.saveModel(model_folder)
 
