@@ -4,11 +4,7 @@ os.environ['KMP_DUPLICATE_LIB_OK']='True'
 from nes_py.wrappers import JoypadSpace
 import gym
 import gym_super_mario_bros
-from gym.wrappers import FrameStack, GrayScaleObservation, TransformObservation
-
-# ???
-import numpy as np
-import matplotlib.pyplot as plt
+from gym.wrappers import FrameStack, GrayScaleObservation, TransformObservation, Monitor
 import torch
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -43,8 +39,8 @@ stacking_number = 10
 # skipping_number = 4
 
 exp_before_training = 100000
-exp_before_online_update = 3
-exp_before_target_update = 10000
+online_update_every = 3
+exp_before_target_sync = 10000
 
 epsilon_start = 1.0
 epsilon_min = 0.01
@@ -58,7 +54,7 @@ vid_folder = os.path.join("videos", datetime.datetime.now().strftime('%Y-%m-%dT%
 
 env = gym_super_mario_bros.make('SuperMarioBros-1-1-v0')
 env = JoypadSpace(env, action_space)
-env = gym.wrappers.RecordVideo(env, vid_folder, episode_trigger=lambda episode_id: True, video_length=0)
+env = Monitor(env, vid_folder, video_callable=lambda episode_id: True, force=True)
 # env = SkipFrame(env, skip=skipping_number) # Not implemented
 env = GrayScaleObservation(env, keep_dim=False)
 # env = ResizeObservation(env, shape=84) # Not implemented
@@ -72,7 +68,7 @@ checkpoint_folder = os.path.join("checkpoints", datetime.datetime.now().strftime
 starting_point = None
 plot_folder = os.path.join("logs", datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S'))
 
-mario = MarioAgentEpsilonGreedy(wantcuda=True, num_actions=len(action_space), state_shape=state_shape, save_dir=checkpoint_folder, starting_point=starting_point, learning_rate=learning_rate, epsilon_start=epsilon_start, epsilon_min=epsilon_min, epsilon_decay=epsilon_decay, batch_size=32, gamma=gamma, buffer_size=buffer_size, exp_before_training=exp_before_training, exp_before_online_update=exp_before_online_update, exp_before_target_update=exp_before_target_update, save_every=save_every)
+mario = MarioAgentEpsilonGreedy(num_actions=len(action_space), state_shape=state_shape, checkpoint_folder=checkpoint_folder, model_folder=model_folder, wantcuda=True, starting_point=starting_point, learning_rate=learning_rate, epsilon_start=epsilon_start, epsilon_min=epsilon_min, epsilon_decay=epsilon_decay, batch_size=32, gamma=gamma, buffer_size=buffer_size, exp_before_training=exp_before_training, online_update_every=online_update_every, exp_before_target_sync=exp_before_target_sync, save_every=save_every)
 
 reward_list = []
 q_list = []
@@ -85,7 +81,7 @@ for episode in range(num_episodes):
     while True:
         env.render() # Visualize
         action = mario.selectAction(state)
-        next_state, reward, resetnow, info = env.step(action)      
+        next_state, reward, resetnow, info = env.step(action)
         mario.saveExp(state, action, next_state, reward, resetnow)
         q, loss = mario.learn_get_TDest_loss()
         state = next_state

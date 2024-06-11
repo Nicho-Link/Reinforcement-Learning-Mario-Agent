@@ -1,8 +1,7 @@
 import torch
 import numpy as np
-import random
 import torch.nn.functional as F
-import os, datetime
+import os
 
 # Import own Functions
 from helper_functions.create_NN import SMBAgentNN
@@ -74,7 +73,7 @@ class MarioAgentEpsilonGreedy:
 
         if np.random.rand() < self.epsilon:
             # Exploration
-            action = random.randint(self.num_actions)
+            action = np.random.randint(0, self.num_actions)
         else:
             # Exploitation
             state = torch.FloatTensor(state).to(self.device)
