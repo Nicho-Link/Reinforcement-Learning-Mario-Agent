@@ -80,14 +80,13 @@ class MarioAgentEpsilonGreedy:
             action_values = self.model(state, model="online")
             action = torch.argmax(action_values, axis=1).item()
 
-        # Decay epsilon
-        self.epsilon = self.epsilon * self.epsilon_decay
-        self.epsilon = max(self.epsilon, self.epsilon_min)
-
         self.current_step = self.current_step + 1
 
         return action
-
+    
+    def decayEpsilon(self):
+        self.epsilon = self.epsilon * self.epsilon_decay
+        self.epsilon = max(self.epsilon, self.epsilon_min)
 
     def saveExp(self, state, action, next_state, reward, resetnow):
         state = torch.FloatTensor(state).to(self.device)

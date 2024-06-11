@@ -103,6 +103,8 @@ for episode in range(num_episodes):
     
     if episode % save_every == 0:
         mario.saveModel(checkpoint_folder, episode=episode)
+    
+    mario.decayEpsilon()
 
 mario.saveModel(model_folder)
 
