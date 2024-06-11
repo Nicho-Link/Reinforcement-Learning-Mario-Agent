@@ -69,6 +69,8 @@ model_folder = os.path.join("models")
 checkpoint_folder = os.path.join("checkpoints", datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S'))
 starting_point = None
 plot_folder = os.path.join("logs", datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S'))
+if not os.path.exists(plot_folder):
+    os.makedirs(plot_folder)
 
 mario = MarioAgentEpsilonGreedy(num_actions=len(action_space), state_shape=state_shape, checkpoint_folder=checkpoint_folder, model_folder=model_folder, wantcuda=True, starting_point=starting_point, learning_rate=learning_rate, epsilon_start=epsilon_start, epsilon_min=epsilon_min, epsilon_decay=epsilon_decay, batch_size=32, gamma=gamma, buffer_size=buffer_size, exp_before_training=exp_before_training, online_update_every=online_update_every, exp_before_target_sync=exp_before_target_sync, save_every=save_every)
 

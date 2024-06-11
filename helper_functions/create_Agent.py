@@ -156,12 +156,17 @@ class MarioAgentEpsilonGreedy:
 
         return (td_estimation.mean().item(), loss)
     
-    def saveModel(self, path):
-
-        save_dir = os.path.join(path, f"Checkpoint_{int(self.current_step // self.save_every)}.chkpt")
-        os.makedirs(save_dir, exist_ok=True)
-        torch.save(dict(model=self.model.state_dict(), epsilon=self.epsilon), save_dir)
-        print(f"Step: {self.current_step}\nModel saved at {save_dir}")
+    def saveModel(self, path, episode=None):
+        if episode == None:
+            save_dir = os.path.join(path, f"Checkpoint_{int(self.current_step // self.save_every)}.chkpt")
+            os.makedirs(save_dir, exist_ok=True)
+            torch.save(dict(model=self.model.state_dict(), epsilon=self.epsilon), save_dir)
+            print(f"Step: {self.current_step}\nModel saved at {save_dir}")
+        else:
+            save_dir = os.path.join(path, f"Checkpoint_{episode}.chkpt")
+            os.makedirs(save_dir, exist_ok=True)
+            torch.save(dict(model=self.model.state_dict(), epsilon=self.epsilon), save_dir)
+            print(f"Step: {self.current_step}\nModel saved at {save_dir}")
 
     def loadModel(self, path):
         checkpoint = torch.load(path, map_location=self.device)
