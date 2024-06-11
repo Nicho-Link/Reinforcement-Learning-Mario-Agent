@@ -75,6 +75,7 @@ if not os.path.exists(plot_folder):
 mario = MarioAgentEpsilonGreedy(num_actions=len(action_space), state_shape=state_shape, checkpoint_folder=checkpoint_folder, model_folder=model_folder, wantcuda=True, starting_point=starting_point, learning_rate=learning_rate, epsilon_start=epsilon_start, epsilon_min=epsilon_min, epsilon_decay=epsilon_decay, batch_size=32, gamma=gamma, buffer_size=buffer_size, exp_before_training=exp_before_training, online_update_every=online_update_every, exp_before_target_sync=exp_before_target_sync, save_every=save_every)
 
 reward_list = []
+steps_list = []
 q_list = []
 loss_list = []
 epsilon_list = []
@@ -95,12 +96,13 @@ for episode in range(num_episodes):
     print(f"Episode {episode + 1} abgeschlossen mit {steps} Schritten, Gesamtbelohnung: {reward}, Epsilon: {mario.epsilon}\n\n")
     
     reward_list.append(reward)
+    steps_list.append(steps)
     q_list.append(q)
     loss_list.append(loss)
     epsilon_list.append(mario.epsilon)
 
     if episode % 50 == 0:
-        plot_results(reward_list, q_list, loss_list, epsilon_list, os.path.join(plot_folder, f"plot_{episode}.png"))
+        plot_results(reward_list, steps_list, q_list, loss_list, epsilon_list, os.path.join(plot_folder, f"plot_{episode}.png"))
     
     if episode % save_every == 0:
         mario.saveModel(checkpoint_folder, episode=episode)
