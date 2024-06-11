@@ -100,6 +100,9 @@ for episode in range(num_episodes):
 
     if episode % 50 == 0:
         plot_results(reward_list, q_list, loss_list, epsilon_list, os.path.join(plot_folder, f"plot_{episode}.png"))
+    
+    if episode % save_every == 0:
+        mario.saveModel(checkpoint_folder, episode=episode)
 
 mario.saveModel(model_folder)
 
