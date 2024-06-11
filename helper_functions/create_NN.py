@@ -6,9 +6,6 @@ class SMBAgentNN(nn.Module):
         super().__init__()
         frames, height, width = state_shape
 
-        if height != 240 or width != 256 or frames != 10:
-            raise ValueError(f"Expecting state shape: (1, 240, 256, 10), got: {state_shape}")
-        
         self.online = nn.Sequential(
             nn.Conv2d(in_channels=frames, out_channels=32, kernel_size=8, stride=4),
             nn.ReLU(),
@@ -17,7 +14,7 @@ class SMBAgentNN(nn.Module):
             nn.Conv2d(in_channels=64, out_channels=64, kernel_size=3, stride=1),
             nn.ReLU(),
             nn.Flatten(),
-            nn.Linear(1600, 512),
+            nn.Linear(3136, 512),
             nn.ReLU(),
             nn.Linear(512, num_actions),
         )

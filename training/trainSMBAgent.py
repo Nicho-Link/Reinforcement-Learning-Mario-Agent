@@ -4,7 +4,8 @@ os.environ['KMP_DUPLICATE_LIB_OK']='True'
 from nes_py.wrappers import JoypadSpace
 import gym
 import gym_super_mario_bros
-from gym.wrappers import FrameStack, GrayScaleObservation, TransformObservation, Monitor
+from gym.wrappers import FrameStack, GrayScaleObservation, ResizeObservation, TransformObservation, Monitor
+import numpy as np
 import torch
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -57,7 +58,8 @@ env = JoypadSpace(env, action_space)
 env = Monitor(env, vid_folder, video_callable=lambda episode_id: True, force=True)
 # env = SkipFrame(env, skip=skipping_number) # Not implemented
 env = GrayScaleObservation(env, keep_dim=False)
-# env = ResizeObservation(env, shape=84) # Not implemented
+env = ResizeObservation(env, shape=84)
+env = TransformObservation(env, lambda obs: np.squeeze(obs, axis=-1))
 env = TransformObservation(env, f=lambda x: x / 255.)
 env = FrameStack(env, num_stack=stacking_number)
 
@@ -79,7 +81,7 @@ for episode in range(num_episodes):
     state = env.reset()
     
     while True:
-        env.render() # Visualize
+        #env.render() # Visualize
         action = mario.selectAction(state)
         next_state, reward, resetnow, info = env.step(action)
         mario.saveExp(state, action, next_state, reward, resetnow)

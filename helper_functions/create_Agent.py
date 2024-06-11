@@ -73,11 +73,14 @@ class MarioAgentEpsilonGreedy:
 
         if np.random.rand() < self.epsilon:
             # Exploration
-            action = np.random.randint(0, self.num_actions)
+            action = np.random.randint(self.num_actions)
         else:
             # Exploitation
-            state = torch.FloatTensor(state).to(self.device)
+            print(state.shape)
+
             state = state.unsqueeze(0)
+            print(state.shape)
+
             action_values = self.model(state, model="online")
             action = torch.argmax(action_values, axis=1).item()
 
