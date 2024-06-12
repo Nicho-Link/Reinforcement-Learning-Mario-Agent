@@ -32,14 +32,14 @@ action_space = [
     ['up'],
     ['down']
 ]
-buffer_size = 20000
+buffer_size = 25000
 batch_size = 32
 learning_rate = 0.00025
 
 stacking_number = 10
 # skipping_number = 4
 
-exp_before_training = 20000
+exp_before_training = 25000
 online_update_every = 3
 exp_before_target_sync = 10000
 
