@@ -57,13 +57,13 @@ class MarioAgentEpsilonGreedy:
         self.model = SMBAgentNN(self.state_shape, self.num_actions).float()
         self.model.to(device=self.device)
 
-        if self.starting_point != None:
-            self.load(self.starting_point)
-
         self.memory = ExperienceReplayBuffer(self.buffer_size)
         
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.learning_rate)
         self.loss_function = torch.nn.SmoothL1Loss()
+
+        if self.starting_point != None:
+            self.loadModel(self.starting_point)
 
     def selectAction(self, state):
         """
