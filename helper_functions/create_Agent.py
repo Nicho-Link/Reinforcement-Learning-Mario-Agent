@@ -110,6 +110,7 @@ class MarioAgentEpsilonGreedy:
         return states, actions.squeeze(), next_states, rewards.squeeze(), resets.squeeze()
 
     def estimateTDerror(self, state, action):
+        action = action.long()
         current_Q = self.model(state, model="online")[np.arange(0, self.batch_size), action]
         return current_Q
     
