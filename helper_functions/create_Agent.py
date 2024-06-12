@@ -138,10 +138,7 @@ class MarioAgentEpsilonGreedy:
             self.sync_Q_target()
 
         if self.current_step < self.exp_before_training:
-            return None, None
-        
-        if self.current_step % self.online_update_every != 0:
-            return None, None
+            return 0, 0
         
         states, actions, next_states, rewards, resets = self.useExp()
 

@@ -39,19 +39,20 @@ learning_rate = 0.00025
 stacking_number = 10
 # skipping_number = 4
 
-exp_before_training = 25000
 online_update_every = 3
 exp_before_target_sync = 10000
 
 epsilon_start = 1.0
 epsilon_min = 0.01
-epsilon_decay = 0.99995
+epsilon_decay = 0.995
 gamma = 0.99
 num_episodes = 1000
 
+plot_every = 25
 save_every = 50
 
 vid_folder = os.path.join("videos")
+exp_before_training = batch_size + 5
 
 env = gym_super_mario_bros.make('SuperMarioBros-1-1-v0')
 env = JoypadSpace(env, action_space)
@@ -84,7 +85,7 @@ q_list = []
 loss_list = []
 epsilon_list = []
 
-for episode in range(num_episodes):
+for episode in range(1, num_episodes+1):
     state = env.reset()
     steps = 0
     while True:
@@ -97,7 +98,7 @@ for episode in range(num_episodes):
         state = next_state
         if resetnow or info['flag_get']:
             break
-    print(f"Episode {episode + 1} abgeschlossen mit {steps} Schritten, Gesamtbelohnung: {reward}, Epsilon: {mario.epsilon}\n\n")
+    print(f"Episode {episode} abgeschlossen mit {steps} Schritten, Gesamtbelohnung: {reward}, Epsilon: {mario.epsilon}\n\n")
     
     reward_list.append(reward)
     steps_list.append(steps)
@@ -105,7 +106,7 @@ for episode in range(num_episodes):
     loss_list.append(loss)
     epsilon_list.append(mario.epsilon)
 
-    if episode % 50 == 0:
+    if episode % plot_every == 0:
         plot_results(reward_list, steps_list, q_list, loss_list, epsilon_list, os.path.join(plot_folder, f"plot_{episode}.png"))
     
     if episode % save_every == 0:
