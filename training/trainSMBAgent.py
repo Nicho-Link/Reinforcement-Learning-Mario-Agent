@@ -47,9 +47,9 @@ epsilon_start = 1.0
 epsilon_min = 0.01
 epsilon_decay = 0.99995
 gamma = 0.99
-num_episodes = 10000
+num_episodes = 1000
 
-save_every = 500000
+save_every = 50
 
 vid_folder = os.path.join("videos")
 
@@ -109,11 +109,11 @@ for episode in range(num_episodes):
         plot_results(reward_list, steps_list, q_list, loss_list, epsilon_list, os.path.join(plot_folder, f"plot_{episode}.png"))
     
     if episode % save_every == 0:
-        torch.save(dict(model=mario.model.state_dict(), epsilon=mario.epsilon), os.path.join(model_folder, f"model_{episode}.pth"))
+        torch.save(dict(model=mario.model.state_dict(), optimizer=mario.optimizer.state_dict(), epsilon=mario.epsilon), os.path.join(model_folder, f"model_{episode}.pth"))
     
     mario.decayEpsilon()
 
-torch.save(dict(model=mario.model.state_dict(), epsilon=mario.epsilon), os.path.join(model_folder, f"final_model.pth"))
+torch.save(dict(model=mario.model.state_dict(), optimizer=mario.optimizer.state_dict(), epsilon=mario.epsilon), os.path.join(model_folder, f"final_model.pth"))
 
 env.close()
 

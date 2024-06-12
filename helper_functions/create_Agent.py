@@ -157,7 +157,9 @@ class MarioAgentEpsilonGreedy:
         checkpoint = torch.load(path, map_location=self.device)
         epsilon = checkpoint["epsilon"]
         model = checkpoint["model"]
+        optimizer = checkpoint["optimizer"]
 
         print(f"Model loaded from {path} with epsilon {epsilon}")
         self.model.load_state_dict(model)
+        self.optimizer.load_state_dict(optimizer)
         self.epsilon = epsilon
