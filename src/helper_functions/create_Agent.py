@@ -87,9 +87,13 @@ class MarioAgentEpsilonGreedy:
 
         return action
     
-    def decayEpsilon(self):
-        self.epsilon = self.epsilon * self.epsilon_decay
-        self.epsilon = max(self.epsilon, self.epsilon_min)
+    def decayEpsilon(self, strat="exp"):
+        if strat == "exp":
+            self.epsilon = self.epsilon * self.epsilon_decay
+            self.epsilon = max(self.epsilon, self.epsilon_min)
+        elif strat == "linear":
+            self.epsilon = self.epsilon - self.epsilon_decay
+            self.epsilon = max(self.epsilon, self.epsilon_min)
 
     def saveExp(self, state, action, next_state, reward, resetnow):
         state = torch.FloatTensor(state).to(self.device)
