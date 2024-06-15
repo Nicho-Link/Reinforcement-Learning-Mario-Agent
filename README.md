@@ -7,7 +7,6 @@ This is a Reinforcement Learning Agent for the [gym-super-mario-bros Environment
 This is a project for a Lecture at DHBW Mannheim. The goal is to develop an own Reinforcement Learning Agent.
 
 ## Directory Structure
-- [doc](doc): XXX
 - [models](models): contains the checkpoints of the different training sessions and the final model
   - [final_model.pth](models/final_model.pth): The final model
 - [res](res): contains ressources of the training sessions
@@ -38,7 +37,7 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 pip install -r requirements.txt
 ```
 - make sure there is at least one model file in the models directory
-- to run the classification with the trained model, start the [Notebook](main.ipynb) and run all cells
+- to let an agent play the trained model, start the [Notebook](main.ipynb) and run all cells
 
 ## License
 
