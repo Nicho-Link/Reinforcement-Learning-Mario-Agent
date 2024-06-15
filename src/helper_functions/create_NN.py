@@ -1,8 +1,16 @@
 from torch import nn
 import copy
+import numpy as np
+
 
 class SMBAgentNN(nn.Module):
-    def __init__(self, state_shape, num_actions):
+    def __init__(self, state_shape: tuple, num_actions: int):
+        """Initializes the DQN model
+
+        Args:
+            state_shape (tuple): The shape of the states
+            num_actions (int): The number of actions
+        """
         super().__init__()
         frames, height, width = state_shape
 
@@ -22,7 +30,16 @@ class SMBAgentNN(nn.Module):
         for param in self.target.parameters():
             param.requires_grad = False
 
-    def forward(self, state, model):
+    def forward(self, state: np.array, model: str):
+        """forward pass for the model
+
+        Args:
+            state (np.array): The state
+            model (str): The model to be used
+
+        Returns:
+            np.array: The output of the model
+        """
         if model == "online":
             return self.online(state)
         elif model == "target":

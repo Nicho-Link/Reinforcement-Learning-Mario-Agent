@@ -1,6 +1,16 @@
 import matplotlib.pyplot as plt
 
-def plot_results(reward_list, steps_list, q_list, loss_list, epsilon_list, save_path):
+def plot_results(reward_list: list, steps_list: list, q_list:list, loss_list:list, epsilon_list:list, save_path: str):
+    """Plots the results of the training
+
+    Args:
+        reward_list (list): List of rewards
+        steps_list (list): List of steps
+        q_list (list): List of Q values
+        loss_list (list): List of losses
+        epsilon_list (list): List of epsilons
+        save_path (str): Path to save the plot
+    """
     plt.figure(figsize=(12, 12))
 
     plt.subplot(5, 1, 1) 
