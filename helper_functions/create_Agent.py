@@ -60,7 +60,10 @@ class MarioAgentEpsilonGreedy:
         self.memory = ExperienceReplayBuffer(self.buffer_size)
         
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.learning_rate)
-        self.loss_function = torch.nn.SmoothL1Loss()
+        # Version 1
+        # self.loss_function = torch.nn.SmoothL1Loss()
+        # Version 2
+        self.loss_function = torch.nn.HuberLoss(delta=1.0)
 
         if self.starting_point != None:
             self.loadModel(self.starting_point)
