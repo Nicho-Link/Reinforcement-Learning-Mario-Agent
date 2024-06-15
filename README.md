@@ -9,7 +9,7 @@ This is a project for a Lecture at DHBW Mannheim. The goal is to develop an own 
 ## Directory Structure
 - [doc](doc): XXX
 - [models](models): contains the checkpoints of the different training sessions and the final model
-  - model_X: XXX
+  - [final_model.pth](models/final_model.pth): The final model
 - [res](res): contains ressources of the training sessions
   - [training_v1](res/training_v1): contains all ressources of session 1
     - [plots](res/training_v1/plots): contains the different plots generated in the training session
