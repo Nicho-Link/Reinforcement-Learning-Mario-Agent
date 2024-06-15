@@ -4,8 +4,8 @@ import torch.nn.functional as F
 import os
 
 # Import own Functions
-from helper_functions.create_NN import SMBAgentNN
-from helper_functions.create_ExpRepBuf import ExperienceReplayBuffer
+from src.helper_functions.create_NN import SMBAgentNN
+from src.helper_functions.create_ExpRepBuf import ExperienceReplayBuffer
 
 class MarioAgentEpsilonGreedy:
     def __init__(self, num_actions, state_shape, checkpoint_folder, model_folder, wantcuda=True, starting_point=None, learning_rate=0.00025, epsilon_start=1.0, epsilon_min=0.1, epsilon_decay=0.9995, batch_size=32, gamma=0.99, buffer_size=100000, exp_before_training=100000, online_update_every=3, exp_before_target_sync=10000, save_every=500000):
