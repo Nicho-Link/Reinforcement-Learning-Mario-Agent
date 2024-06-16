@@ -2,7 +2,7 @@
 
 
 ## What is this?
-This is a Reinforcement Learning Agent for the [gym-super-mario-bros Environment](https://github.com/Kautenja/gym-super-mario-bros/) using a DDQN (Double Deep Q-Network) and an (exponential) decaying epsilon-greedy strategy.
+This is a Reinforcement Learning Agent for the [gym-super-mario-bros Environment](https://github.com/Kautenja/gym-super-mario-bros/) using a DDQN (Double Deep Q-Network) and a decaying epsilon-greedy strategy.
 
 This is a project for a Lecture at DHBW Mannheim. The goal is to develop an own Reinforcement Learning Agent.
 
