@@ -28,11 +28,13 @@ This is a project for a Lecture at DHBW Mannheim. The goal is to develop an own 
 
 ## Run Code
 - install the required version of [gym-super-mario-bros Environment](https://github.com/Kautenja/gym-super-mario-bros/) and follow their installation guide.
-- if you want to use your GPU for training please follow the installation guide of [PyTorch](https://pytorch.org/get-started/locally/). To install the PyTorch Version of this project the command is:
+  (You need to install the C++ build tools)
+- For [PyTorch](https://pytorch.org/get-started/locally/) please use their installation guide. (Especially for GPU usage with Cuda -> [Nvidia Cuda Drivers](https://developer.nvidia.com/cuda-toolkit) required)
+  To install the PyTorch Version of this project the command is:
 ```bash
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 ```
-- install the required [packages](requirements.txt)
+- install the remaining required [packages](requirements.txt)
 ```bash
 pip install -r requirements.txt
 ```
