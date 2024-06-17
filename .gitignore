@@ -119,6 +119,7 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+*json
 
 # Pyre type checker
 .pyre/
@@ -127,7 +128,7 @@ dmypy.json
 .DS_Store
 
 # exclude documentation
-*.mp4
+
 *.pdf
 
 # exclude node mdoules
@@ -142,3 +143,5 @@ video/**
 
 # exclude data directory
 data/**
+
+all_videos/
