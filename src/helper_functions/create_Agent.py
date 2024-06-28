@@ -209,12 +209,14 @@ class MarioAgentEpsilonGreedy:
             float: The Q target
         """
         with torch.no_grad():
-            next_state_Q = self.model(next_states, model="online")
-            best_action = torch.argmax(next_state_Q, axis=1)
-            next_Q = self.model(next_states, model="target")[
-                np.arange(0, self.batch_size), best_action
-            ]
-        return (rewards + (1 - resets.float()) * self.gamma * next_Q).float()
+            next_Q_online = self.model.online(next_states)
+            next_actions = next_Q_online.argmax(dim=1)
+            
+            next_Q_target = self.model.target(next_states)
+            next_Q_target_max = next_Q_target.gather(1, next_actions.unsqueeze(1)).squeeze(1)
+            
+            q_target = rewards + (self.gamma * next_Q_target_max * (1 - resets.float()))
+        return q_target
 
     def update_Q_online_get_loss(self, td_estimation: float, q_target: float):
         """Update the online model and get the loss
