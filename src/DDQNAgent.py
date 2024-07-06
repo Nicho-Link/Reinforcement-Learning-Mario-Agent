@@ -5,7 +5,7 @@ import torch
 import torch.nn.functional as F
 
 from src.ExperienceBuffer import ExperienceReplayBuffer
-from src.create_NN import SMBAgentNN
+from src.DQN import DQN
 
 
 class MarioAgentEpsilonGreedy:
@@ -74,14 +74,18 @@ class MarioAgentEpsilonGreedy:
         self.save_every = save_every
 
         self.current_step = 0
-
-        self.model = SMBAgentNN(self.state_shape, self.num_actions).float()
-        self.model.to(device=self.device)
+        
+        # create dqn instances
+        self.online = DQN(self.state_shape, self.num_actions).to(self.device)
+        target_net = DQN(self.state_shape, self.num_actions).to(self.device)
+        target_net.load_state_dict(self.online.state_dict())
+        target_net.eval()
+        self.target = target_net
 
         self.memory = ExperienceReplayBuffer(self.buffer_size)
 
         self.optimizer = torch.optim.Adam(
-            self.model.parameters(), lr=self.learning_rate
+            self.online.parameters(), lr=self.learning_rate
         )
 
         self.loss_function = torch.nn.HuberLoss(delta=1.0)
@@ -107,8 +111,7 @@ class MarioAgentEpsilonGreedy:
         else:
             # Exploitation
             state = state.unsqueeze(0)
-            action_values = self.model(state, model="online")
-            action = torch.argmax(action_values, axis=1).item()
+            action = self.online(state).argmax().item()
 
         self.current_step = self.current_step + 1
 
@@ -188,9 +191,7 @@ class MarioAgentEpsilonGreedy:
             float: The current Q value
         """
         action = action.long()
-        current_Q = self.model(state, model="online")[
-            np.arange(0, self.batch_size), action
-        ]
+        current_Q = self.online(state)[np.arange(0, self.batch_size), action]
         return current_Q
 
     def estimateQTarget(
@@ -207,12 +208,14 @@ class MarioAgentEpsilonGreedy:
             float: The Q target
         """
         with torch.no_grad():
-            next_Q_online = self.model.online(next_states)
+            next_Q_online = self.online(next_states)
             next_actions = next_Q_online.argmax(dim=1)
-            
-            next_Q_target = self.model.target(next_states)
-            next_Q_target_max = next_Q_target.gather(1, next_actions.unsqueeze(1)).squeeze(1)
-            
+
+            next_Q_target = self.target(next_states)
+            next_Q_target_max = next_Q_target.gather(
+                1, next_actions.unsqueeze(1)
+            ).squeeze(1)
+
             q_target = rewards + (self.gamma * next_Q_target_max * (1 - resets.float()))
         return q_target
 
@@ -234,7 +237,7 @@ class MarioAgentEpsilonGreedy:
 
     def sync_Q_target(self):
         """Sync the target model with the online model"""
-        self.model.target.load_state_dict(self.model.online.state_dict())
+        self.target.load_state_dict(self.online.state_dict())
 
     def learn_get_TDest_loss(self):
         """Learn from the experiences and get the TD error and loss
@@ -270,6 +273,6 @@ class MarioAgentEpsilonGreedy:
         optimizer = checkpoint["optimizer"]
 
         print(f"Model loaded from {path} with epsilon {epsilon}")
-        self.model.load_state_dict(model)
+        self.online.load_state_dict(model)
         self.optimizer.load_state_dict(optimizer)
         self.epsilon = epsilon
