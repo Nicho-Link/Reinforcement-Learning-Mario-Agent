@@ -4,7 +4,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 
-from ExperienceBuffer import ExperienceReplayBuffer
+from src.ExperienceBuffer import ExperienceReplayBuffer
 from src.create_NN import SMBAgentNN
 
 
