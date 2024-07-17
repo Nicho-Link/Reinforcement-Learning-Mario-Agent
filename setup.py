@@ -12,27 +12,20 @@ def create_directories(agent: str, version: str = None) -> bool:
         bool: True if setup is done
     """
     # create base directories
-    if not os.path.exists("models"):
-        os.makedirs("models")
-    if not os.path.exists("references"):
-        os.makedirs("references")
+    os.makedirs("models", exist_ok=True)
+    os.makedirs("references", exist_ok=True)
 
     # create agent directories
     if version:
-        if not os.path.exists(f"models/{agent}_v{version}"):
-            os.makedirs(f"models/{agent}_v{version}")
-            os.makedirs(f"models/{agent}_v{version}/checkpoints")
-        if not os.path.exists(f"references/{agent}_v{version}"):
-            os.makedirs(f"references/{agent}_v{version}/images")
-            os.makedirs(f"references/{agent}_v{version}/videos")
-            os.makedirs(f"references/{agent}_v{version}/evaluation")
+        model_path = os.path.join("models", f"{agent}_v{version}")
+        reference_path = os.path.join("references", f"{agent}_v{version}")
     else:
-        if not os.path.exists(f"models/{agent}"):
-            os.makedirs(f"models/{agent}")
-            os.makedirs(f"models/{agent}/checkpoints")
-        if not os.path.exists(f"references/{agent}"):
-            os.makedirs(f"references/{agent}/images")
-            os.makedirs(f"references/{agent}/videos")
-            os.makedirs(f"references/{agent}/evaluation")
+        model_path = os.path.join("models", agent)
+        reference_path = os.path.join("references", agent)
+
+    os.makedirs(os.path.join(model_path, "checkpoints"), exist_ok=True)
+    os.makedirs(os.path.join(reference_path, "images"), exist_ok=True)
+    os.makedirs(os.path.join(reference_path, "videos"), exist_ok=True)
+    os.makedirs(os.path.join(reference_path, "evaluation"), exist_ok=True)
 
     return True
