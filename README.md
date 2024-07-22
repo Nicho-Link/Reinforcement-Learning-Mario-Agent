@@ -7,24 +7,11 @@ This is a Reinforcement Learning Agent for the [gym-super-mario-bros Environment
 This is a project for a Lecture at DHBW Mannheim. The goal is to develop an own Reinforcement Learning Agent.
 
 ## Directory Structure
-- [models](models): contains the checkpoints of the different training sessions and the final model
-  - [final_model.pth](models/final_model.pth): The final model
-- [res](res): contains ressources of the training sessions
-  - [training_v1](res/training_v1): contains all ressources of session 1
-    - [plots](res/training_v1/plots): contains the different plots generated in the training session
-    - [videos](res/training_v1/videos): contains selected videos of some episodes of the training
-  - [training_v2](res/training_v2): contains all ressources of session 1
-    - [plots](res/training_v2/plots): contains the different plots generated in the training session
-    - [videos](res/training_v2/videos): contains selected videos of some episodes of the training
-- [src](src): containts all of the code
-  - [helper_functions](src/helper_functions): contains all files that create some classes to build & train the RL-Agent
-    - [create_Agent.py](src/helper_functions/create_Agent.py) class to create the mario-agent
-    - [create_ExpRepBuf.py](src/helper_functions/create_ExpRepBuf.py) class to create a custom experience replay buffer
-    - [create_NN.py](src/helper_functions/create_NN.py) class to create the DDQN-Neural-Network
-    - [create_Plot](src/helper_functions/create_Plot.py) function to plot all necessary data
-  - [train_v1.ipynb](src/train_v1.ipynb): notebook-script to train the agent with the hyperparameters of v1
-  - [train_v2.ipynb](src/train_v2.ipynb): notebook-script to train the agent with the hyperparameters of v2
-- [main.ipynb](main.ipynb): notebook-script to let the final model play the game
+- [models](models): contains the final models of our DQN and DDQN
+- [notebooks](notebooks): contains both notebooks to train & evaluate a DQN-Agent or DDQN-Agent
+- [references](references): contains ressources such as plots and videos of the training and evaluation of our agents
+- [src](src): containts the sourcecode used by our jupyter-notebooks
+- [setup.py](setup.py): contains code to create the initial folderstructure to train an agent
 
 ## Run Code
 - install the required version of [gym-super-mario-bros Environment](https://github.com/Kautenja/gym-super-mario-bros/) and follow their installation guide.
